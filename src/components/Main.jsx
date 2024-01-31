@@ -11,10 +11,12 @@ export default function Main() {
 
     const fetchData = async(query) => {
       if(query) {
-        await fetchAndSet(`dogtype/${query}`, setDogType);
+        const searchData = await fetchAndSet(`dogtype/${query}`);
+        setDog(searchData);
         setSearchedDogType(query);
       } else {
-        await fetchAndSet("dog", setDog);
+        const dogData = await fetchAndSet("dog");
+        setDog(dogData);
         await fetchAndSet("dogtype", setDogType);
         searchedDogType("");
       }

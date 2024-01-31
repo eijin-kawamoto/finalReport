@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TextField, Box, Button } from "@mui/material";
 
-const Search = ({ onSearch }) => {
+export default function Search({ onSearch }) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = () => {
@@ -22,5 +22,3 @@ const Search = ({ onSearch }) => {
     </Box>
   );
 };
-
-export default Search;
