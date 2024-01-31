@@ -18,7 +18,7 @@ export default function Main() {
         const dogData = await fetchAndSet("dog");
         setDog(dogData);
         await fetchAndSet("dogtype", setDogType);
-        searchedDogType("");
+        setSearchedDogType("");
       }
     };
 
