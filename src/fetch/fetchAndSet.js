@@ -1,21 +1,11 @@
-export const fetchAndSet = async (url, setFunction) => {
+import { fetchDogs } from "./fetchdogs";
+
+export const fetchAndSet = async (type, setFunction) => {
     try {
-      const response = await fetch(url);
-      if(!response.ok) {
-        throw new Error(`Failed to fetch data from ${url}`);
-      }
-
-      const contentType = response.headers.get("content-type");
-
-      if (contentType && contentType.includes("application/json")) {
-        const data = await response.json();
-        setFunction(data.message || data);
-      } else {
-        const nonJsonData = await response.text();
-        console.error(`Non-JSON response form ${url}:`, nonJsonData);
-      }
+      const data = await fetchDogs(type);
+      setFunction(data);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.log(error);
     }
   };
   

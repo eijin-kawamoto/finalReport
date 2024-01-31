@@ -3,42 +3,45 @@ import { Box } from "@mui/material";
 import Gallery from "./Gallery";
 import Search from "./Search";
 import { fetchAndSet } from "../fetch/fetchAndSet";
-import { fetchDogs } from "../fetch/fetchdogs";
 
 export default function Main() {
-  const [dogImageUrl, setDogImageUrl] = useState("");
+    const [dog, setDog] = useState([]);
+    const [dogtype, setDogType] = useState([]);
+    const [searchedDogType, setSearchedDogType] = useState("");
 
-    const fetchData = async(query) => {
-      try {
-        let data;
-
-        if(query) {
-          data = await fetchDogs(query);
-        } else {
-          const response = await fetch("https://dog.ceo/api/breed/dog/images/random/");
-          data = await response.json();
+    const fetchData = async (query) => {
+        try {
+            if (query) {
+                const searchData = await fetchAndSet(`dogtype/${query}`);
+                setDogType(searchData);
+                setSearchedDogType(query);
+            } else {
+                const dogData = await fetchAndSet("dog");
+                setDog(dogData);
+                await fetchAndSet("dogtype", setDogType);
+                setSearchedDogType("");
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
         }
-
-      setDogImageUrl(data.message || data);
-      } catch(error) {
-        console.error("Error fetching data:", error);
-      }
     };
 
     useEffect(() => {
-      fetchData();
-    },[]);
+        (async () => {
+            await fetchData();
+        })();
+    }, []);
 
-    const handleSearch = async(query) => {
-      fetchData(query);
+    const handleSearch = async (query) => {
+        await fetchData(query);
     };
-    
-  return (
-    <main>
-      <section className="section">
-        <Search onSearch={handleSearch} />
-        <Gallery imageUrl={dogImageUrl} />
-      </section>
-    </main>
-  );
+
+    return (
+        <main>
+            <section className="section">
+                <Search onSearch={handleSearch} />
+                <Gallery dog={dogtype} />
+            </section>
+        </main>
+    );
 }
