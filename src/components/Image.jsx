@@ -1,8 +1,11 @@
-export default function Image() {
+import React from "react";
+
+export default function Image({ imageUrl, altText }) {
     return (
         <img
-        src="https://images.dog.ceo/breeds/shiba/shiba-8.jpg"
-        alt="cute dog"
+        src={imageUrl}
+        alt={altText}
+        style={{ maxWidth: "100%", height: "auto" }}
         />
     );
 }

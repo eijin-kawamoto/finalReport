@@ -34,7 +34,7 @@ export default function Main() {
     <main>
       <section className="section">
         <Search onSearch={handleSearch} />
-        <Gallery dog={dog} dogtype={dogtype} setSearchedDogType={searchedDogType} />
+        <Gallery dog={dog} />
       </section>
     </main>
   );
