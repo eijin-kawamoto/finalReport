@@ -11,14 +11,12 @@ export default function Main() {
 
     const fetchData = async(query) => {
       if(query) {
-        const searchData = await fetchAndSet(`dogtype/${query}`);
-        setDog(searchData);
+        await fetchAndSet(`dogtype/${query}`, setDogType);
         setSearchedDogType(query);
       } else {
-        const dogData = await fetchAndSet("dog");
-        setDog(dogData);
+        await fetchAndSet("dog", setDog);
         await fetchAndSet("dogtype", setDogType);
-        setSearchedDogType("");
+        searchedDogType("");
       }
     };
 
@@ -36,7 +34,7 @@ export default function Main() {
     <main>
       <section className="section">
         <Search onSearch={handleSearch} />
-        <Gallery dog={dog} />
+        <Gallery dog={dog} dogtype={dogtype} setSearchedDogType={searchedDogType} />
       </section>
     </main>
   );
