@@ -9,7 +9,7 @@ export const fetchAndSet = async (url, setFunction) => {
 
       if (contentType && contentType.includes("application/json")) {
         const data = await response.json();
-        setFunction(data.message);
+        setFunction(data.message || data);
       } else {
         const nonJsonData = await response.text();
         console.error(`Non-JSON response form ${url}:`, nonJsonData);

@@ -3,17 +3,23 @@ import { Box } from "@mui/material";
 import Gallery from "./Gallery";
 import Search from "./Search";
 import { fetchAndSet } from "../fetch/fetchAndSet";
+import { fetchDogs } from "../fetch/fetchdogs";
 
 export default function Main() {
   const [dogImageUrl, setDogImageUrl] = useState("");
 
     const fetchData = async(query) => {
       try {
-        const url = query
-          ? `/api/breed/${query}/images/random`
-          : "/api/breed/dog/images/random";
+        let data;
 
-      const data = await fetchAndSet(url, setDogImageUrl);
+        if(query) {
+          data = await fetchDogs(query);
+        } else {
+          const response = await fetch("https://dog.ceo/api/breed/dog/images/random/");
+          data = await response.json();
+        }
+
+      setDogImageUrl(data.message || data);
       } catch(error) {
         console.error("Error fetching data:", error);
       }
