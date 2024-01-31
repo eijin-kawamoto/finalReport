@@ -1,16 +1,10 @@
 import React from "react";
 import Image from "./Image";
 
-export default function Gallery({ dog }) {
+export default function Gallery({ imageUrl }) {
     return (
         <div>
-            {dog.map((dogData) => (
-                <Image
-                key={dogData.id}
-                imageUrl={dogData.url}
-                altText={dogData.altText}
-                />
-            ))}
+          {imageUrl && <Image imageUrl={imageUrl} />}
         </div>
     );
 }
