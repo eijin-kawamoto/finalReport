@@ -12,13 +12,13 @@ export default function Main() {
     const fetchData = async(query) => {
       try {
         if(query) {
-          const dogTypeData = await fetchAndSet(`dogtype/${query}`);
+          const dogTypeData = await fetchAndSet(`/api/breed/${query}/images/random`);
           setDogType(dogTypeData);
           setSearchedDogType(query);
         } else {
-          const dogData = await fetchAndSet("dog");
+          const dogData = await fetchAndSet('/api/breed/dog/images/random');
           setDog(dogData);
-          await fetchAndSet("dogtype", setDogType);
+          await fetchAndSet('/api/breed/dogtype/images/random', setDogType);
           setSearchedDogType("");
         }
       } catch(error) {
