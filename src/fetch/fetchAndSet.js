@@ -11,7 +11,8 @@ export const fetchAndSet = async (url, setFunction) => {
         const data = await response.json();
         setFunction(data.message);
       } else {
-        throw new Error(`Invalid response format form ${url}`);
+        const nonJsonData = await response.text();
+        console.error(`Non-JSON response form ${url}:`, nonJsonData);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
