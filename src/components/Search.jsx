@@ -5,6 +5,7 @@ export default function Search({ onSearch }) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = () => {
+    console.log(searchQuery);
     onSearch(searchQuery);
   };
 
