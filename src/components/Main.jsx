@@ -10,15 +10,19 @@ export default function Main() {
     const [searchedDogType, setSearchedDogType] = useState("");
 
     const fetchData = async(query) => {
-      if(query) {
-        const dogTypeData = await fetchAndSet(`dogtype/${query}`);
-        setDogType(dogTypeData);
-        setSearchedDogType(query);
-      } else {
-        const dogData = await fetchAndSet("dog");
-        setDog(dogData);
-        await fetchAndSet("dogtype", setDogType);
-        setSearchedDogType("");
+      try {
+        if(query) {
+          const dogTypeData = await fetchAndSet(`dogtype/${query}`);
+          setDogType(dogTypeData);
+          setSearchedDogType(query);
+        } else {
+          const dogData = await fetchAndSet("dog");
+          setDog(dogData);
+          await fetchAndSet("dogtype", setDogType);
+          setSearchedDogType("");
+        }
+      } catch(error) {
+        console.error("Error fetching data:", error);
       }
     };
 
