@@ -1,11 +1,13 @@
-import { fetchDogs } from "./fetchdogs";
-
-export const fetchAndSet = async (type, setFunction) => {
+export const fetchAndSet = async (url, setFunction) => {
     try {
-      const data = await fetchDogs(type);
-      setFunction(data);
+      const response = await fetch(url);
+      if(!response.ok) {
+        throw new Error(`Failed to fetch data from ${url}`);
+      }
+      const data = await response.json();
+      setFunction(data.message);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching data:", error);
     }
   };
   
