@@ -33,7 +33,7 @@ export default function Main() {
   return (
     <main>
       <section className="section" style={{ textAlign: "right"}}>
-        <Typography variant="h3" gutterBottom>
+        <Typography variant="h5" gutterBottom>
           6つの犬種のフリー画像を表示
         </Typography>
         
