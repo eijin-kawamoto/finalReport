@@ -17,18 +17,14 @@ export default function Main() {
 
   useEffect(() => {
     const getDogImages = async () => {
-      try {
-        const dogImagesPromises = dogBreeds.map(async (breed) => {
-          const response = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
-          const data = await response.json();
-          return { breed, imageUrl: data.message };
-        });
+      const dogImagesPromises = dogBreeds.map(async (breed) => {
+        const response = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
+        const data = await response.json();
+        return { breed, imageUrl: data.message };
+      });
 
-        const resolvedDogImages = await Promise.all(dogImagesPromises);
-        setDogImages(resolvedDogImages);
-      } catch (error) {
-        console.error("Error fetching dog images:", error);
-      }
+      const resolvedDogImages = await Promise.all(dogImagesPromises);
+      setDogImages(resolvedDogImages);
     };
 
     getDogImages();
@@ -47,7 +43,7 @@ export default function Main() {
                 <img
                   src={dogImage.imageUrl}
                   alt={`Random ${breedTranslations[dogImage.breed]}`}
-                  style={{ width: "auto", maxWidth: "200px", height: "auto", maxHeight: "200px" }}
+                  style={{ width: "auto", maxWidth: "250px", height: "auto", maxHeight: "250px" }}
                 />
                 <Typography variant="h4">{breedTranslations[dogImage.breed]}</Typography>
               </Box>
