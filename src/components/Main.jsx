@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import Gallery from "./Gallery";
-import Search from "./Search";
 
 async function fetchDogData(type) {
     const url = `https://dog.ceo/api/breed/${type}/images/random/`;
@@ -11,48 +10,49 @@ async function fetchDogData(type) {
 }
 
 export default function Main() {
-    const [dog, setDog] = useState([]);
-    const [dogtype, setDogType] = useState([]);
-    const [searchedDogType, setSearchedDogType] = useState("");
+    const [dogImages, setDogImages] = useState([]);
 
-    const fetchData = async (query) => {
+    const fetchAllDogImages = async () => {
         try {
-            if (query) {
-                const searchData = await fetchDogData(query);
-                if(searchData.status === "error") {
-                    console.warn("Dog not found:", searchData.message);
-                    setDogType(null);
-                    setSearchedDogType(query);
+            const dogBreeds = ["beagle", "bulldog", "chihuahua", "dachshund", "germanshepherd", 
+            "goldenretriever", "poodle", "pug", "siberianhusky", "boxer"];
+
+            const dogImagesPromises = dogBreeds.map(async (breed) => {
+                const searchData = await fetchDogData(breed);
+                if (searchData.status === "error") {
+                  console.warn("Dog not found:", searchData.message);
+                  return null;
                 } else {
-                    setDogType(searchData);
-                    setSearchedDogType(query);
+                  return { breed, imageUrl: searchData.message };
                 }
-            } else {
-                const dogData = await fetchAndSet("dog");
-                setDog(dogData);
-                await fetchAndSet("dogtype", setDogType);
-                setSearchedDogType("");
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
+        });
+
+        const resolvedDogImages = await Promise.all(dogImagesPromises);
+      setDogImages(resolvedDogImages.filter((item) => item !== null));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
     useEffect(() => {
         (async () => {
-            await fetchData();
+            await fetchAllDogImages();
         })();
     }, []);
-
-    const handleSearch = async (query) => {
-        await fetchData(query);
-    };
 
     return (
         <main>
             <section className="section">
-                <Search onSearch={handleSearch} />
-                <Gallery imageUrl={dogtype.message} />
+                <Typography variant="h4" gutterBottom>
+                    Dog Gallery
+                </Typography>
+                <Grid container spacing={2}>
+                    {dogImages.map((dogImage,index) => (
+                        <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                            <Gallery imageUrl={dogImage.imageUrl} breed={dogImage.breed} />
+                        </Grid>
+                    ))}
+                </Grid>
             </section>
         </main>
     );
