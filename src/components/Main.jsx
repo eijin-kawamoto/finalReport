@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Box, Typography } from "@mui/material";
 
+const breedTranslations = {
+  akita: "秋田犬",
+  beagle: "ビーグル",
+  chihuahua: "チワワ",
+  husky: "シベリアンハスキー",
+  pug: "パグ",
+  shihtzu: "シーズー",
+};
+
 const dogBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu"];
 
 export default function Main() {
@@ -37,10 +46,10 @@ export default function Main() {
               <Box display="flex" flexDirection="column" alignItems="center">
                 <img
                   src={dogImage.imageUrl}
-                  alt={`Random ${dogImage.breed}`}
+                  alt={`Random ${breedTranslations[dogImage.breed]}`}
                   style={{ width: "auto", maxWidth: "200px", height: "auto", maxHeight: "200px" }}
                 />
-                <Typography variant="h4">{dogImage.breed}</Typography>
+                <Typography variant="h4">{breedTranslations[dogImage.breed]}</Typography>
               </Box>
             </Grid>
           ))}
