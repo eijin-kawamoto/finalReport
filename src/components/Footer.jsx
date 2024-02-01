@@ -5,7 +5,7 @@ export default function Footer() {
     return (
       <AppBar position="static" className="footer" style={{ backgroundColor: "gray"}}>
         <Toolbar style={{ justifyContent: "center" }}>
-          <Typography variant="h5" style={{ margin: 0, color: "#333", display: "block" }}>
+          <Typography variant="body1" style={{ margin: 0, color: "#333", display: "block" }}>
             日本大学文理学部情報科学科Webプログラミングの演習課題 
           </Typography>
           <Typography variant="h5" style={{ margin: 0, color: "#333" }}>
