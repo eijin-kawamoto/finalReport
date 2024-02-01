@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import Gallery from "./Gallery";
 
+async function fetchDogData(type) {
+    const url = `https://dog.ceo/api/breed/${type}/images/random/`;
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+}
+
 export default function Main() {
     const [dogImages, setDogImages] = useState([]);
 
@@ -11,16 +18,17 @@ export default function Main() {
             "goldenretriever", "poodle", "pug", "siberianhusky", "boxer"];
 
             const dogImagesPromises = dogBreeds.map(async (breed) => {
-                const response = await fetch(`/api/dog/${breed}`);
-                if(!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+                const searchData = await fetchDogData(breed);
+                if (searchData.status === "error") {
+                  console.warn("Dog not found:", searchData.message);
+                  return null;
+                } else {
+                    return { breed, imageUrl: searchData.message };
                 }
-                const data = await response.json();
-                return { breed, imageUrl: data.message };
         });
 
         const resolvedDogImages = await Promise.all(dogImagesPromises);
-      setDogImages(resolvedDogImages);
+      setDogImages(resolvedDogImages.filter((item) => item !== null));
     } catch (error) {
       console.error("Error fetching data:", error);
     }
