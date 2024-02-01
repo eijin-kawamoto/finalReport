@@ -38,7 +38,7 @@ export default function Main() {
                 <img
                   src={dogImage.imageUrl}
                   alt={`Random ${dogImage.breed}`}
-                  style={{ maxWidth: "auto", height: "auto" }}
+                  style={{ width: "auto", maxWidth: "200px", height: "auto", maxHeight: "200px" }}
                 />
                 <Typography variant="h4">{dogImage.breed}</Typography>
               </Box>
