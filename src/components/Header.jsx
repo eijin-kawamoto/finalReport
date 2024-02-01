@@ -7,7 +7,7 @@ export default function Header() {
       <Container maxWidth="md">
         <Toolbar>
           <img
-            src="/dog_icon.png"
+            src="/public/dog_icon.png"
             alt="Dog Icon"
             style={{ marginRight: "10px", width: "30px", height: "30px" }}
           />
