@@ -8,4 +8,3 @@ export const fetchAndSet = async (type, setFunction) => {
       console.log(error);
     }
   };
-  

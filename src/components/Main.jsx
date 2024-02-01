@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import Gallery from "./Gallery";
 import Search from "./Search";
-import { fetchAndSet } from "../fetch/fetchAndSet";
+
+async function fetchDogData(type) {
+    const url = `https://dog.ceo/api/breed/${type}/images/random/`;
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+}
 
 export default function Main() {
     const [dog, setDog] = useState([]);
@@ -12,9 +18,15 @@ export default function Main() {
     const fetchData = async (query) => {
         try {
             if (query) {
-                const searchData = await fetchAndSet(`dogtype/${query}`);
-                setDogType(searchData);
-                setSearchedDogType(query);
+                const searchData = await fetchDogData(query);
+                if(searchData.status === "error") {
+                    console.warn("Dog not found:", searchData.message);
+                    setDogType(null);
+                    setSearchedDogType(query);
+                } else {
+                    setDogType(searchData);
+                    setSearchedDogType(query);
+                }
             } else {
                 const dogData = await fetchAndSet("dog");
                 setDog(dogData);
@@ -40,7 +52,7 @@ export default function Main() {
         <main>
             <section className="section">
                 <Search onSearch={handleSearch} />
-                <Gallery dog={dogtype} />
+                <Gallery imageUrl={dogtype.message} />
             </section>
         </main>
     );
