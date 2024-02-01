@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Grid, Box, Typography } from "@mui/material";
 
 const dogBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu"];
 
@@ -31,16 +31,20 @@ export default function Main() {
         <Typography variant="h4" gutterBottom>
           Random Dog Images
         </Typography>
-        {dogImages.map((dogImage, index) => (
-          <Box key={index} display="flex" flexDirection="column" alignItems="center">
-            <img
-              src={dogImage.imageUrl}
-              alt={`Random ${dogImage.breed}`}
-              style={{ maxWidth: "30%", height: "auto" }}
-            />
-            <Typography variant="h4">{dogImage.breed}</Typography>
-          </Box>
-        ))}
+        <Grid container spacing={2}>
+          {dogImages.map((dogImage, index) => (
+            <Grid item key={index} xs={12} sm={6} md={4}>
+              <Box display="flex" flexDirection="column" alignItems="center">
+                <img
+                  src={dogImage.imageUrl}
+                  alt={`Random ${dogImage.breed}`}
+                  style={{ maxWidth: "30%", height: "auto" }}
+                />
+                <Typography variant="h4">{dogImage.breed}</Typography>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
       </section>
     </main>
   );
