@@ -34,11 +34,9 @@ export default function Main() {
     <main>
       <section className="section">
         <Typography variant="h4" gutterBottom>
-          Random Dog Images
+          6つの犬種のフリー画像を表示
         </Typography>
-        <Button variant="contained" color="primary" onClick={getDogImages}>
-          違う画像にする
-        </Button>
+        
         <Grid container spacing={2}>
           {dogImages.map((dogImage, index) => (
             <Grid item key={index} xs={12} sm={6} md={4}>
@@ -51,9 +49,11 @@ export default function Main() {
                 <Typography variant="h4">{breedTranslations[dogImage.breed]}</Typography>
               </Box>
             </Grid>
-            
           ))}
         </Grid>
+        <Button variant="contained" color="primary" onClick={getDogImages}>
+          違う画像にする
+        </Button>
       </section>
     </main>
   );
