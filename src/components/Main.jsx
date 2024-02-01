@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 
-const dogBreeds = ["akita", "beagle", "frenchbulldog", "chihuahua", "husky"];
+const dogBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu"];
 
 export default function Main() {
   const [dogImages, setDogImages] = useState([]);
@@ -32,11 +32,11 @@ export default function Main() {
           Random Dog Images
         </Typography>
         {dogImages.map((dogImage, index) => (
-          <Box key={index}>
+          <Box key={index} display="flex" flexDirection="column" alignItems="center">
             <img
               src={dogImage.imageUrl}
               alt={`Random ${dogImage.breed}`}
-              style={{ maxWidth: "100%", height: "auto" }}
+              style={{ maxWidth: "50%", height: "auto" }}
             />
             <Typography variant="caption">{dogImage.breed}</Typography>
           </Box>
