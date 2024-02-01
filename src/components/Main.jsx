@@ -36,7 +36,7 @@ export default function Main() {
         <Typography variant="h4" gutterBottom>
           Random Dog Images
         </Typography>
-        <Button variant="contained" color="#f0e68c" onClick={getDogImages}>
+        <Button variant="contained" color="primary" onClick={getDogImages}>
           違う画像にする
         </Button>
         <Grid container spacing={2}>
