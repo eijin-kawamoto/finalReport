@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Box, Typography } from "@mui/material";
+import { Grid, Box, Typography, Button } from "@mui/material";
 
 const breedTranslations = {
   akita: "秋田犬",
@@ -15,19 +15,19 @@ const dogBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu"];
 export default function Main() {
   const [dogImages, setDogImages] = useState([]);
 
-  useEffect(() => {
-    const getDogImages = async () => {
-      const dogImagesPromises = dogBreeds.map(async (breed) => {
-        const response = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
-        const data = await response.json();
-        return { breed, imageUrl: data.message };
-      });
+  const getDogImages = async () => {
+    const dogImagesPromises = dogBreeds.map(async (breed) => {
+      const response = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
+      const data = await response.json();
+      return { breed, imageUrl: data.message };
+    });
 
-      const resolvedDogImages = await Promise.all(dogImagesPromises);
-      setDogImages(resolvedDogImages);
-    };
+    const resolvedDogImages = await Promise.all(dogImagesPromises);
+    setDogImages(resolvedDogImages);
+  };
 
-    getDogImages();
+    useEffect(() => {
+      getDogImages();
   }, []);
 
   return (
@@ -36,6 +36,9 @@ export default function Main() {
         <Typography variant="h4" gutterBottom>
           Random Dog Images
         </Typography>
+        <Button variant="contained" color="primary" onClick={getDogImages}>
+          違う画像にする
+        </Button>
         <Grid container spacing={2}>
           {dogImages.map((dogImage, index) => (
             <Grid item key={index} xs={12} sm={6} md={4}>
