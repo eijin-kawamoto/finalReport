@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Box, Typography, Button, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import { Grid, Box, Typography, Button, Select, InputLabel, FormControl, MenuItem } from "@mui/material";
 
 const breedTranslations = {
   akita: "秋田犬",
@@ -8,35 +8,39 @@ const breedTranslations = {
   husky: "シベリアンハスキー",
   pug: "パグ",
   shihtzu: "シーズー",
+  doberman: "ドーベルマン",
+  chow: "チャウチャウ",
+  dachshund: "ダックスフンド",
+  dalmatian: "ダルメシアン",
+  labrador: "ラブラドールレトリバー",
 };
 
-const dogBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu"];
+const defaultBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu"];
+const selectableBreeds = ["doberman", "chow", "dachshund", "dalmatian", "labrador"];
 
 export default function Main() {
   const [dogImages, setDogImages] = useState([]);
-  const [selectedBreed, setSelectedBreed] = useState("");
-  const [randomImage, setRandomImage] = useState(null);
+  const [selectedBreed, setSelectedBreed] = useState("akita");
 
-  const getDogImage = async (breed) => {
-    const response = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
-    const data = await response.json();
-    return { breed, imageUrl: data.message };
-  };
+  const getDogImages = async () => {
+    const dogImagesPromises = defaultBreeds.map(async (breed) => {
+      const response = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
+      const data = await response.json();
+      return { breed, imageUrl: data.message };
+    });
 
-  const handleBreedChange = (event) => {
-    setSelectedBreed(event.target.value);
+    const resolvedDogImages = await Promise.all(dogImagesPromises);
+    setDogImages(resolvedDogImages);
   };
 
   const getRandomImage = async () => {
-    if (selectedBreed) {
-      const dogImage = await getDogImage(selectedBreed);
-      setRandomImage(dogImage);
-    }
+    const response = await fetch(`https://dog.ceo/api/breed/${selectedBreed}/images/random`);
+    const data = await response.json();
+    setDogImages([{ breed: selectedBreed, imageUrl: data.message }]);
   };
 
   useEffect(() => {
-    const initialDogImagesPromises = dogBreeds.map(async (breed) => getDogImage(breed));
-    Promise.all(initialDogImagesPromises).then((resolvedDogImages) => setDogImages(resolvedDogImages));
+    getDogImages();
   }, []);
 
   return (
@@ -62,16 +66,16 @@ export default function Main() {
         </Grid>
 
         <Box display="flex" flexDirection="column" alignItems="center" marginTop={2}>
-          <FormControl variant="outlined" style={{ minWidth: 200 }}>
-            <InputLabel id="breed-select-label">犬種を選択</InputLabel>
+          <FormControl variant="outlined">
+            <InputLabel id="select-breed-label">犬種を選択</InputLabel>
             <Select
-              labelId="breed-select-label"
-              id="breed-select"
+              labelId="select-breed-label"
+              id="select-breed"
               value={selectedBreed}
-              onChange={handleBreedChange}
+              onChange={(e) => setSelectedBreed(e.target.value)}
               label="犬種を選択"
             >
-              {dogBreeds.map((breed) => (
+              {selectableBreeds.map((breed) => (
                 <MenuItem key={breed} value={breed}>
                   {breedTranslations[breed]}
                 </MenuItem>
@@ -80,26 +84,10 @@ export default function Main() {
           </FormControl>
 
           <Button variant="contained" color="primary" onClick={getRandomImage} style={{ marginTop: 2 }}>
-            選択された犬種の画像を表示する
+            選択された犬種の画像を表示
           </Button>
-
-          {randomImage && (
-            <>
-              <img
-                src={randomImage.imageUrl}
-                alt={`Random ${breedTranslations[randomImage.breed]}`}
-                style={{ width: "auto", maxWidth: "250px", height: "auto", maxHeight: "250px" }}
-              />
-              <Typography variant="h4">{breedTranslations[randomImage.breed]}</Typography>
-            </>
-          )}
         </Box>
-
-        <Button variant="contained" color="primary" onClick={() => getDogImages()}>
-          違う画像にする
-        </Button>
       </section>
     </main>
   );
 }
-
