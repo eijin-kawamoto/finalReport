@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Box, Typography, Button, Select, InputLabel, FormControl, MenuItem } from "@mui/material";
+import { Grid, Box, Typography, Button, Select, 
+  InputLabel, FormControl, MenuItem } from "@mui/material";
 
 const breedTranslations = {
   akita: "秋田犬",
@@ -13,10 +14,13 @@ const breedTranslations = {
   dachshund: "ダックスフンド",
   dalmatian: "ダルメシアン",
   labrador: "ラブラドールレトリバー",
+  mix: "ミックス",
+  pomeranian: "ポメラニアン",
+  papillon: "パピヨン"
 };
 
 const defaultBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu"];
-const selectableBreeds = ["doberman", "chow", "dachshund", "dalmatian", "labrador"];
+const selectableBreeds = ["doberman", "chow", "dachshund", "dalmatian", "labrador", "mix", "pomeranian", "papillon"];
 
 export default function Main() {
   const [defaultDogImages, setDefaultDogImages] = useState([]);
