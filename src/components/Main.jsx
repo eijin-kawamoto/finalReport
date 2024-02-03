@@ -75,7 +75,7 @@ export default function Main() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
 
-          <Button variant="contained" color="primary" onClick={getRandomImage} marginTop={2}>
+          <Button variant="contained" color="primary" onClick={getRandomImage} style={{ marginTop: 2 }}>
             入力された犬種の画像を表示する
           </Button>
           
