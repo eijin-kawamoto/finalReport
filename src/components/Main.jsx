@@ -37,10 +37,10 @@ export default function Main() {
   const getRandomImage = async () => {
     const searchBreed = searchTerm.toLowerCase();
 
-    if (!dogBreeds.includes(searchBreed)) {
+    if (searchBreed && !dogBreeds.includes(searchBreed)) {
       const response = await fetch(`https://dog.ceo/api/breed/${searchBreed}/images/random`);
       const data = await response.json();
-      setRandomImage({ breed: searchBreed, imageUrl: data.message });
+      setDogImages([{ breed: searchBreed, imageUrl: data.message }]);
     } else {
       console.warn(`"${searchTerm}" is one of the default breeds. Please enter a different breed.`);
     }
@@ -87,7 +87,7 @@ export default function Main() {
             )}
           />
 
-          <Button variant="contained" color="primary" onClick={getRandomImage} marginTop={2}>
+          <Button variant="contained" color="primary" style={{ marginTop: 2 }} onClick={getRandomImage}>
             ランダムな犬種の画像を表示
           </Button>
           
