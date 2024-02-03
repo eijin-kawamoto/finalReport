@@ -41,9 +41,10 @@ export default function Main() {
       const response = await fetch(`https://dog.ceo/api/breed/${searchBreed}/images/random`);
       const data = await response.json();
       setRandomImages({ breed: searchBreed, imageUrl: data.message });
+    } else if (searchBreed === "") {
+      console.warn("犬種が入力されていません。");
     } else {
       console.warn(`"${searchTerm}" は対象の犬種ではありません。`);
-      setRandomImage(null);
     }
   };
 
