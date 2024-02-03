@@ -12,6 +12,7 @@ const breedTranslations = {
   doberman: "ドーベルマン",
   chow: "チャウチャウ",
   dachshund: "ダックスフンド",
+  shiba: "柴犬",
   dalmatian: "ダルメシアン",
   labrador: "ラブラドールレトリバー",
   mix: "ミックス",
@@ -20,7 +21,8 @@ const breedTranslations = {
 };
 
 const defaultBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu"];
-const selectableBreeds = ["doberman", "chow", "dachshund", "dalmatian", "labrador", "mix", "pomeranian", "papillon"];
+const selectableBreeds = ["doberman", "chow", "dachshund", "shiba",
+ "dalmatian", "labrador", "mix", "pomeranian", "papillon"];
 
 export default function Main() {
   const [defaultDogImages, setDefaultDogImages] = useState([]);
