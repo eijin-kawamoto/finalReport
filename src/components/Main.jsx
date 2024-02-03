@@ -37,19 +37,20 @@ export default function Main() {
   const getRandomImage = async () => {
     const searchBreed = searchTerm.toLowerCase();
 
-    if (searchBreed && !dogBreeds.includes(searchBreed)) {
+    if (searchBreed && selectBreeds.includes(searchBreed)) {
       const response = await fetch(`https://dog.ceo/api/breed/${searchBreed}/images/random`);
       const data = await response.json();
-      setDogImages([{ breed: searchBreed, imageUrl: data.message }]);
+      setRandomImages({ breed: searchBreed, imageUrl: data.message });
     } else {
-      console.warn(`"${searchTerm}" is one of the default breeds. Please enter a different breed.`);
+      console.warn(`"${searchTerm}" は対象の犬種ではありません。`);
+      setRandomImage(null);
     }
   };
 
     useEffect(() => {
       getDogImages();
       getRandomImage();
-  }, []);
+  }, [searchTerm]);
 
   return (
     <main>
@@ -79,7 +80,7 @@ export default function Main() {
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="犬種を入力"
+                label="犬種を選択"
                 variant="outlined"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -87,7 +88,7 @@ export default function Main() {
             )}
           />
 
-          <Button variant="contained" color="primary" style={{ marginTop: 2 }} onClick={getRandomImage}>
+          <Button variant="contained" color="primary" onClick={getRandomImage}　style={{ marginTop: 2 }}>
             ランダムな犬種の画像を表示
           </Button>
           
