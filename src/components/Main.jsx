@@ -75,7 +75,7 @@ export default function Main() {
 
         <Box display="flex" flexDirection="column" alignItems="center" marginTop={2}>
           <Autocomplete
-            options={breedTranslations[selectBreeds]}
+            options={selectBreeds}
             renderInput={(params) => (
               <TextField
                 {...params}
