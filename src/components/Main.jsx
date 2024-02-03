@@ -14,8 +14,8 @@ const breedTranslations = {
   doberman: "ドーベルマン",
 };
 
-const dogBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu",
-"dachshund", "chow", "dalmatian", "doberman",];
+const dogBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu",];
+const customDogBreeds = ["dachshund", "chow", "dalmatian", "doberman",];
 
 export default function Main() {
   const [dogImages, setDogImages] = useState([]);
@@ -34,9 +34,14 @@ export default function Main() {
 
   const getRandomImage = async () => {
     const searchBreed = customBreed.toLowerCase();
-    const response = await fetch(`https://dog.ceo/api/breed/${searchBreed}/images/random`);
-     const data = await response.json();
-    setDogImages([{ breed: searchBreed, imageUrl: data.message }]);
+    
+    if (customDogBreeds.includes(searchBreed)) {
+      const response = await fetch(`https://dog.ceo/api/breed/${searchBreed}/images/random`);
+      const data = await response.json();
+      setDogImages([{ breed: searchBreed, imageUrl: data.message }]);
+    } else {
+      alert("指定された犬種は表示できません。");
+    }
   };
 
     useEffect(() => {
