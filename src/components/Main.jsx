@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Box, Typography, Button, TextField, Autocomplete } from "@mui/material";
+import { Grid, Box, Typography, Button, TextField } from "@mui/material";
 
 const breedTranslations = {
   akita: "秋田犬",
@@ -8,42 +8,41 @@ const breedTranslations = {
   husky: "シベリアンハスキー",
   pug: "パグ",
   shihtzu: "シーズー",
-  dachshund: "ダックスフンド",
-  chow: "チャウチャウ",
-  dalmatian: "ダルメシアン",
-  doberman: "ドーベルマン",
 };
 
 const dogBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu"];
-const searchDogBreeds = ["dachshund", "chow", "dalmatian", "doberman"];
 
 export default function Main() {
   const [dogImages, setDogImages] = useState([]);
-  const [selectedBreed, setSelectedBreed] = useState("");
+  const [randomImage, setRandomImage] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const getDogImages = async (breed) => {
-    const response = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
-    const data = await response.json();
-    return { breed, imageUrl: data.message };
+  const getDogImages = async () => {
+    const dogImagesPromises = dogBreeds.map(async (breed) => {
+      const response = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
+      const data = await response.json();
+      return { breed, imageUrl: data.message };
+    });
+
+    const resolvedDogImages = await Promise.all(dogImagesPromises);
+    setDogImages(resolvedDogImages);
   };
 
   const getRandomImage = async () => {
-    if (selectedBreed) {
-      const image = await getDogImages(selectedBreed);
-      setDogImages([image]);
+    const searchBreed = searchTerm.toLowerCase();
+
+    if (!dogBreeds.includes(searchBreed)) {
+      const response = await fetch(`https://dog.ceo/api/breed/${searchBreed}/images/random`);
+      const data = await response.json();
+      setRandomImage({ breed: searchBreed, imageUrl: data.message });
     } else {
-      alert("犬種を選択してください。");
+      console.warn(`"${searchTerm}" is one of the default breeds. Please enter a different breed.`);
     }
   };
 
-  useEffect(() => {
-    const initialImagesPromises = initialDogBreeds.map(async (breed) => {
-      return getDogImages(breed);
-    });
-
-    Promise.all(initialImagesPromises).then((resolvedDogImages) => {
-      setDogImages(resolvedDogImages);
-    });
+    useEffect(() => {
+      getDogImages();
+      getRandomImage();
   }, []);
 
   return (
@@ -69,25 +68,30 @@ export default function Main() {
         </Grid>
 
         <Box display="flex" flexDirection="column" alignItems="center" marginTop={2}>
-          <Autocomplete
-            options={searchDogBreeds}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="犬種を選択"
-                variant="outlined"
-                value={selectedBreed}
-                onChange={(e) => setSelectedBreed(e.target.value)}
-              />
-            )}
+          <TextField
+            label="犬種を入力"
+            variant="outlined"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
 
-          <Button variant="contained" color="primary" onClick={getRandomImage} style={{ marginTop: "16px" }}>
+          <Button variant="contained" color="primary" onClick={getRandomImage} marginTop={2}>
             ランダムな犬種の画像を表示
           </Button>
+          
+          {randomImage && (
+            <>
+              <img
+                src={randomImage.imageUrl}
+                alt={`Random ${breedTranslations[randomImage.breed]}`}
+                style={{ width: "auto", maxWidth: "250px", height: "auto", maxHeight: "250px" }}
+              />
+              <Typography variant="h4">{breedTranslations[randomImage.breed]}</Typography>
+            </>
+          )}
         </Box>
 
-        <Button variant="contained" color="primary" onClick={() => window.location.reload()}>
+        <Button variant="contained" color="primary" onClick={getDogImages}>
           違う画像にする
         </Button>
       </section>
