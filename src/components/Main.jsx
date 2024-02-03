@@ -66,11 +66,7 @@ export default function Main() {
             </Grid>
           ))}
         </Grid>
-        
-        <Button variant="contained" color="primary" onClick={getDogImages}>
-          違う画像にする
-        </Button>
-        
+
         <Box display="flex" flexDirection="column" alignItems="center" marginTop={2}>
           <FormControl variant="outlined">
             <InputLabel id="select-breed-label">犬種を選択</InputLabel>
@@ -104,6 +100,10 @@ export default function Main() {
             </Box>
           )}
         </Box>
+
+        <Button variant="contained" color="primary" onClick={getDogImages}>
+          違う画像にする
+        </Button>
       </section>
     </main>
   );
