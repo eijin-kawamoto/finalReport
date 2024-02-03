@@ -19,7 +19,8 @@ const defaultBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu"
 const selectableBreeds = ["doberman", "chow", "dachshund", "dalmatian", "labrador"];
 
 export default function Main() {
-  const [dogImages, setDogImages] = useState([]);
+  const [defaultDogImages, setDefaultDogImages] = useState([]);
+  const [selectedDogImage, setSelectedDogImage] = useState(null);
   const [selectedBreed, setSelectedBreed] = useState("akita");
 
   const getDogImage = async (breed) => {
@@ -30,13 +31,13 @@ export default function Main() {
 
   const getRandomImage = async () => {
     const newImage = await getDogImage(selectedBreed);
-    setDogImages([newImage]);
+    setSelectedDogImage(newImage);
   };
 
   useEffect(() => {
     const initialImagesPromises = defaultBreeds.map((breed) => getDogImage(breed));
     Promise.all(initialImagesPromises).then((resolvedImages) => {
-      setDogImages(resolvedImages);
+      setDefaultDogImages(resolvedImages);
     });
   }, []);
 
@@ -48,7 +49,7 @@ export default function Main() {
         </Typography>
 
         <Grid container spacing={2}>
-          {dogImages.map((dogImage, index) => (
+          {defaultDogImages.map((dogImage, index) => (
             <Grid item key={index} xs={12} sm={6} md={4}>
               <Box display="flex" flexDirection="column" alignItems="center">
                 <img
@@ -83,9 +84,19 @@ export default function Main() {
           <Button variant="contained" color="primary" onClick={getRandomImage} style={{ marginTop: 2 }}>
             選択された犬種の画像を表示
           </Button>
+
+          {selectedDogImage && (
+            <Box display="flex" flexDirection="column" alignItems="center" marginTop={2}>
+              <img
+                src={selectedDogImage.imageUrl}
+                alt={`Random ${breedTranslations[selectedDogImage.breed]}`}
+                style={{ width: "auto", maxWidth: "250px", height: "auto", maxHeight: "250px" }}
+              />
+              <Typography variant="h4">{breedTranslations[selectedDogImage.breed]}</Typography>
+            </Box>
+          )}
         </Box>
       </section>
     </main>
   );
 }
-
