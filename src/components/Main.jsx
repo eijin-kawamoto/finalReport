@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Box, Typography, Button, TextField, Autocomplete } from "@mui/material";
+import { Grid, Box, Typography, Button, TextField } from "@mui/material";
 
 const breedTranslations = {
   akita: "秋田犬",
@@ -68,17 +68,11 @@ export default function Main() {
         </Grid>
 
         <Box display="flex" flexDirection="column" alignItems="center" marginTop={2}>
-          <Autocomplete
-            options={dogBreeds}
-            renderInput={( params ) => (
-              <TextField
-                {...params}
-                label="犬種を入力"
-                variant="outlined"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            )}
+          <TextField
+            label="犬種を入力"
+            variant="outlined"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
 
           <Button variant="contained" color="primary" onClick={getRandomImage} marginTop={2}>
