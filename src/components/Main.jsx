@@ -34,7 +34,7 @@ export default function Main() {
 
   const getRandomImage = async () => {
     const searchBreed = customBreed.toLowerCase();
-    
+
     if (customDogBreeds.includes(searchBreed)) {
       const response = await fetch(`https://dog.ceo/api/breed/${searchBreed}/images/random`);
       const data = await response.json();
@@ -72,7 +72,7 @@ export default function Main() {
 
         <Box display="flex" flexDirection="column" alignItems="center" marginTop={2}>
           <Autocomplete
-            options={dogBreeds}
+            options={customDogBreeds}
             renderInput={(params) => (
               <TextField
                 {...params}
