@@ -75,6 +75,10 @@ export default function Main() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
 
+          <Button variant="contained" color="primary" onClick={getRandomImage} marginTop={2}>
+            ランダムな犬種の画像を表示
+          </Button>
+          
           {randomImage && (
             <>
               <img
