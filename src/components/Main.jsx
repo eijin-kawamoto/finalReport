@@ -14,38 +14,39 @@ const breedTranslations = {
   doberman: "ドーベルマン",
 };
 
-const dogBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu", "dachshund", "chow", "dalmatian", "doberman",];
-const customDogBreeds = ["dachshund", "chow", "dalmatian", "doberman",];
+const dogBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu"];
+const searchDogBreeds = ["dachshund", "chow", "dalmatian", "doberman"];
 
 export default function Main() {
   const [dogImages, setDogImages] = useState([]);
-  const [customBreed, setCustomBreed] = useState("");
+  const [selectedBreed, setSelectedBreed] = useState("");
 
-  const getDogImages = async () => {
-    const dogImagesPromises = dogBreeds.map(async (breed) => {
-      const response = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
-      const data = await response.json();
-      return { breed, imageUrl: data.message };
-    });
-
-    const resolvedDogImages = await Promise.all(dogImagesPromises);
-    setDogImages(resolvedDogImages);
+  const getDogImages = async (breed) => {
+    const response = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
+    const data = await response.json();
+    return { breed, imageUrl: data.message };
   };
 
   const getRandomImage = async () => {
-    const searchBreed = customBreed.toLowerCase();
-
-    if (customDogBreeds.includes(searchBreed)) {
-      const response = await fetch(`https://dog.ceo/api/breed/${searchBreed}/images/random`);
-      const data = await response.json();
-      setDogImages([{ breed: searchBreed, imageUrl: data.message }]);
+    if (selectedBreed) {
+      const image = await getDogImages(selectedBreed);
+      setDogImages([image]);
     } else {
-      alert("指定された犬種は表示できません。");
+      alert("犬種を選択してください。");
     }
   };
 
-    useEffect(() => {
-      getDogImages();
+  const handleSearchInputChange = (e, value) => {
+    setSelectedBreed(value);
+  };
+
+  useEffect(() => {
+    const initialImagesPromises = initialDogBreeds.map(getDogImages);
+    const initialResolvedImages = Promise.all(initialImagesPromises);
+
+    initialResolvedImages.then((resolvedImages) => {
+      setDogImages(resolvedImages);
+    });
   }, []);
 
   return (
@@ -72,14 +73,14 @@ export default function Main() {
 
         <Box display="flex" flexDirection="column" alignItems="center" marginTop={2}>
           <Autocomplete
-            options={dogBreeds}
+            options={searchDogBreeds}
             renderInput={(params) => (
               <TextField
                 {...params}
                 label="犬種を選択または入力"
                 variant="outlined"
-                value={customBreed}
-                onChange={(e) => setCustomBreed(e.target.value)}
+                value={selectedBreed}
+                onChange={handleSearchInputChange}
               />
             )}
           />
@@ -89,7 +90,7 @@ export default function Main() {
           </Button>
         </Box>
 
-        <Button variant="contained" color="primary" onClick={getDogImages}>
+        <Button variant="contained" color="primary" onClick={() => getDogImages(initialDogBreeds[0])}>
           違う画像にする
         </Button>
       </section>
