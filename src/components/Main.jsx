@@ -27,6 +27,12 @@ export default function Main() {
   const [selectedDogImage, setSelectedDogImage] = useState(null);
   const [selectedBreed, setSelectedBreed] = useState("akita");
 
+  const getDogImages = async () => {
+    const initialImagesPromises = defaultBreeds.map((breed) => getDogImage(breed));
+    const resolvedImages = await Promise.all(initialImagesPromises);
+    setDefaultDogImages(resolvedImages);
+  };
+
   const getDogImage = async (breed) => {
     const response = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
     const data = await response.json();
@@ -39,11 +45,9 @@ export default function Main() {
   };
 
   useEffect(() => {
-    const initialImagesPromises = defaultBreeds.map((breed) => getDogImage(breed));
-    Promise.all(initialImagesPromises).then((resolvedImages) => {
-      setDefaultDogImages(resolvedImages);
-    });
+    getDogImages();
   }, []);
+
 
   return (
     <main>
