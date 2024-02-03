@@ -84,7 +84,7 @@ export default function Main() {
                 label="犬種を選択"
                 variant="outlined"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e, value) => setSearchTerm(value)}
               />
             )}
           />
