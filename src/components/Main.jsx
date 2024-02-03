@@ -53,9 +53,12 @@ export default function Main() {
 
   return (
     <main>
-      <section className="section" style={{ textAlign: "right" }}>
+      <section className="section" style={{ textAlign: "center" }}>
         <Typography variant="h5" gutterBottom>
-          6つの犬種のフリー画像を表示します。下のボタンを押すことで画像を変更できます。
+          6つの犬種のフリー画像を表示します。
+        </Typography>
+        <Typography variant="h5" gutterBottom>
+        下のボタンを押すことで画像を変更できます。
         </Typography>
         <Typography variant="h5" gutterBottom>
           選択用フォームから表示したい犬種を選んで表示することもできる！
