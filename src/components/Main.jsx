@@ -22,25 +22,22 @@ export default function Main() {
   const [dogImages, setDogImages] = useState([]);
   const [selectedBreed, setSelectedBreed] = useState("akita");
 
-  const getDogImages = async () => {
-    const dogImagesPromises = defaultBreeds.map(async (breed) => {
-      const response = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
-      const data = await response.json();
-      return { breed, imageUrl: data.message };
-    });
-
-    const resolvedDogImages = await Promise.all(dogImagesPromises);
-    setDogImages(resolvedDogImages);
+  const getDogImage = async (breed) => {
+    const response = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
+    const data = await response.json();
+    return { breed, imageUrl: data.message };
   };
 
   const getRandomImage = async () => {
-    const response = await fetch(`https://dog.ceo/api/breed/${selectedBreed}/images/random`);
-    const data = await response.json();
-    setDogImages([...dogImages, { breed: selectedBreed, imageUrl: data.message }]);
+    const newImage = await getDogImage(selectedBreed);
+    setDogImages([newImage]);
   };
 
   useEffect(() => {
-    getDogImages();
+    const initialImagesPromises = defaultBreeds.map((breed) => getDogImage(breed));
+    Promise.all(initialImagesPromises).then((resolvedImages) => {
+      setDogImages(resolvedImages);
+    });
   }, []);
 
   return (
@@ -91,3 +88,4 @@ export default function Main() {
     </main>
   );
 }
+
