@@ -36,16 +36,13 @@ export default function Main() {
     }
   };
 
-  const handleSearchInputChange = (e, value) => {
-    setSelectedBreed(value);
-  };
-
   useEffect(() => {
-    const initialImagesPromises = initialDogBreeds.map(getDogImages);
-    const initialResolvedImages = Promise.all(initialImagesPromises);
+    const initialImagesPromises = initialDogBreeds.map(async (breed) => {
+      return getDogImages(breed);
+    });
 
-    initialResolvedImages.then((resolvedImages) => {
-      setDogImages(resolvedImages);
+    Promise.all(initialImagesPromises).then((resolvedDogImages) => {
+      setDogImages(resolvedDogImages);
     });
   }, []);
 
@@ -77,20 +74,20 @@ export default function Main() {
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="犬種を選択または入力"
+                label="犬種を選択"
                 variant="outlined"
                 value={selectedBreed}
-                onChange={handleSearchInputChange}
+                onChange={(e) => setSelectedBreed(e.target.value)}
               />
             )}
           />
 
-          <Button variant="contained" color="primary" onClick={getRandomImage} marginTop={2}>
+          <Button variant="contained" color="primary" onClick={getRandomImage} style={{ marginTop: "16px" }}>
             ランダムな犬種の画像を表示
           </Button>
         </Box>
 
-        <Button variant="contained" color="primary" onClick={() => getDogImages(initialDogBreeds[0])}>
+        <Button variant="contained" color="primary" onClick={() => window.location.reload()}>
           違う画像にする
         </Button>
       </section>
