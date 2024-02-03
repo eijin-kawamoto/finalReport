@@ -25,7 +25,7 @@ const selectableBreeds = ["doberman", "chow", "dachshund", "dalmatian", "labrado
 export default function Main() {
   const [defaultDogImages, setDefaultDogImages] = useState([]);
   const [selectedDogImage, setSelectedDogImage] = useState(null);
-  const [selectedBreed, setSelectedBreed] = useState("akita");
+  const [selectedBreed, setSelectedBreed] = useState("");
 
   const getDogImages = async () => {
     const initialImagesPromises = defaultBreeds.map((breed) => getDogImage(breed));
