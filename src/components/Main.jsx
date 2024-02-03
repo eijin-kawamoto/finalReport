@@ -69,14 +69,14 @@ export default function Main() {
 
         <Box display="flex" flexDirection="column" alignItems="center" marginTop={2}>
           <TextField
-            label="犬種を入力"
+            label="検索したい犬種を英語で入力"
             variant="outlined"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
 
           <Button variant="contained" color="primary" onClick={getRandomImage} marginTop={2}>
-            ランダムな犬種の画像を表示
+            入力された犬種の画像を表示する
           </Button>
           
           {randomImage && (
