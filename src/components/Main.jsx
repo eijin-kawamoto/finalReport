@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Box, Typography, Button, TextField } from "@mui/material";
+import { Grid, Box, Typography, Button, TextField, Autocomplete } from "@mui/material";
 
 const breedTranslations = {
   akita: "秋田犬",
@@ -8,9 +8,15 @@ const breedTranslations = {
   husky: "シベリアンハスキー",
   pug: "パグ",
   shihtzu: "シーズー",
+  doberman: "ドーベルマン",
+  chow: "チャウチャウ",
+  dachshund: "ダックスフンド",
+  dalmatian: "ダルメシアン",
+  labrador: "ラブラドールレトリバー"
 };
 
 const dogBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu"];
+const selectBreeds = ["doberman", "chow", "dachshund", "dalmatian", "labrador"]
 
 export default function Main() {
   const [dogImages, setDogImages] = useState([]);
@@ -68,11 +74,17 @@ export default function Main() {
         </Grid>
 
         <Box display="flex" flexDirection="column" alignItems="center" marginTop={2}>
-          <TextField
-            label="犬種を入力"
-            variant="outlined"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+          <Autocomplete
+            options={selectBreeds}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="犬種を入力"
+                variant="outlined"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            )}
           />
 
           <Button variant="contained" color="primary" onClick={getRandomImage} marginTop={2}>
