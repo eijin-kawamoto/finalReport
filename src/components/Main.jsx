@@ -36,7 +36,7 @@ export default function Main() {
   const getRandomImage = async () => {
     const response = await fetch(`https://dog.ceo/api/breed/${selectedBreed}/images/random`);
     const data = await response.json();
-    setDogImages([{ breed: selectedBreed, imageUrl: data.message }]);
+    setDogImages([...dogImages, { breed: selectedBreed, imageUrl: data.message }]);
   };
 
   useEffect(() => {
