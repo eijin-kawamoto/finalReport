@@ -15,6 +15,7 @@ const dogBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu"];
 export default function Main() {
   const [dogImages, setDogImages] = useState([]);
   const [randomImage, setRandomImage] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const getDogImages = async () => {
     const dogImagesPromises = dogBreeds.map(async (breed) => {
@@ -28,11 +29,16 @@ export default function Main() {
   };
 
   const getRandomImage = async () => {
-    const randomBreed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
-    const response = await fetch(`https://dog.ceo/api/breed/${randomBreed}/images/random`);
-    const data = await response.json();
-    setRandomImage({ breed: randomBreed, imageUrl: data.message });
-  }
+    const searchBreed = searchTerm.toLowerCase();
+
+    if (!dogBreeds.includes(searchBreed)) {
+      const response = await fetch(`https://dog.ceo/api/breed/${searchBreed}/images/random`);
+      const data = await response.json();
+      setRandomImage({ breed: searchBreed, imageUrl: data.message });
+    } else {
+      console.warn(`"${searchTerm}" is one of the default breeds. Please enter a different breed.`);
+    }
+  };
 
     useEffect(() => {
       getDogImages();
@@ -62,6 +68,13 @@ export default function Main() {
         </Grid>
 
         <Box display="flex" flexDirection="column" alignItems="center" marginTop={2}>
+          <TextField
+            label="犬種を入力"
+            variant="outlined"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+
           {randomImage && (
             <>
               <img
@@ -73,7 +86,7 @@ export default function Main() {
             </>
           )}
         </Box>
-        
+
         <Button variant="contained" color="primary" onClick={getDogImages}>
           違う画像にする
         </Button>
