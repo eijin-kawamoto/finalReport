@@ -14,6 +14,7 @@ const dogBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu"];
 
 export default function Main() {
   const [dogImages, setDogImages] = useState([]);
+  const [randomImage, setRandomImage] = useState(null);
 
   const getDogImages = async () => {
     const dogImagesPromises = dogBreeds.map(async (breed) => {
@@ -26,8 +27,16 @@ export default function Main() {
     setDogImages(resolvedDogImages);
   };
 
+  const getRandomImage = async () => {
+    const randomBreed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
+    const response = await fetch(`https://dog.ceo/api/breed/${randomBreed}/images/random`);
+    const data = await response.json();
+    setRandomImage({ breed: randomBreed, imageUrl: data.message });
+  }
+
     useEffect(() => {
       getDogImages();
+      getRandomImage();
   }, []);
 
   return (
@@ -51,6 +60,20 @@ export default function Main() {
             </Grid>
           ))}
         </Grid>
+
+        <Box display="flex" flexDirection="column" alignItems="center" marginTop={2}>
+          {randomImage && (
+            <>
+              <img
+                src={randomImage.imageUrl}
+                alt={`Random ${breedTranslations[randomImage.breed]}`}
+                style={{ width: "auto", maxWidth: "250px", height: "auto", maxHeight: "250px" }}
+              />
+              <Typography variant="h4">{breedTranslations[randomImage.breed]}</Typography>
+            </>
+          )}
+        </Box>
+        
         <Button variant="contained" color="primary" onClick={getDogImages}>
           違う画像にする
         </Button>
