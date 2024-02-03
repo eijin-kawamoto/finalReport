@@ -14,7 +14,7 @@ const breedTranslations = {
   doberman: "ドーベルマン",
 };
 
-const dogBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu",];
+const dogBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu", "dachshund", "chow", "dalmatian", "doberman",];
 const customDogBreeds = ["dachshund", "chow", "dalmatian", "doberman",];
 
 export default function Main() {
@@ -72,7 +72,7 @@ export default function Main() {
 
         <Box display="flex" flexDirection="column" alignItems="center" marginTop={2}>
           <Autocomplete
-            options={customDogBreeds}
+            options={dogBreeds}
             renderInput={(params) => (
               <TextField
                 {...params}
