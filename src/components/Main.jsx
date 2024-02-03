@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Box, Typography, Button, TextField, Autocomplete } from "@mui/material";
+import { Grid, Box, Typography, Button, TextField } from "@mui/material";
 
 const breedTranslations = {
   akita: "秋田犬",
@@ -8,15 +8,9 @@ const breedTranslations = {
   husky: "シベリアンハスキー",
   pug: "パグ",
   shihtzu: "シーズー",
-  doberman: "ドーベルマン",
-  chow: "チャウチャウ",
-  dachshund: "ダックスフンド",
-  dalmatian: "ダルメシアン",
-  labrador: "ラブラドールレトリバー"
 };
 
 const dogBreeds = ["akita", "beagle", "chihuahua", "husky", "pug", "shihtzu"];
-const selectBreeds = ["doberman", "chow", "dachshund", "dalmatian", "labrador"]
 
 export default function Main() {
   const [dogImages, setDogImages] = useState([]);
@@ -37,21 +31,19 @@ export default function Main() {
   const getRandomImage = async () => {
     const searchBreed = searchTerm.toLowerCase();
 
-    if (searchBreed && selectBreeds.includes(searchBreed)) {
+    if (!dogBreeds.includes(searchBreed)) {
       const response = await fetch(`https://dog.ceo/api/breed/${searchBreed}/images/random`);
       const data = await response.json();
-      setRandomImages({ breed: searchBreed, imageUrl: data.message });
-    } else if (searchBreed === "") {
-      console.warn("犬種が入力されていません。");
+      setRandomImage({ breed: searchBreed, imageUrl: data.message });
     } else {
-      console.warn(`"${searchTerm}" は対象の犬種ではありません。`);
+      console.warn(`"${searchTerm}" is one of the default breeds. Please enter a different breed.`);
     }
   };
 
     useEffect(() => {
       getDogImages();
       getRandomImage();
-  }, [searchTerm]);
+  }, []);
 
   return (
     <main>
@@ -76,20 +68,14 @@ export default function Main() {
         </Grid>
 
         <Box display="flex" flexDirection="column" alignItems="center" marginTop={2}>
-          <Autocomplete
-            options={selectBreeds}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="犬種を選択"
-                variant="outlined"
-                value={searchTerm}
-                onChange={(e, value) => setSearchTerm(value)}
-              />
-            )}
+          <TextField
+            label="犬種を入力"
+            variant="outlined"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
 
-          <Button variant="contained" color="primary" onClick={getRandomImage}　style={{ marginTop: 2 }}>
+          <Button variant="contained" color="primary" onClick={getRandomImage} marginTop={2}>
             ランダムな犬種の画像を表示
           </Button>
           
